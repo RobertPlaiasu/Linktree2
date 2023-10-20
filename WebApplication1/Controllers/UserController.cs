@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Entites;
 using WebApplication1.Repositories.Contracts;
 
@@ -14,6 +15,7 @@ namespace WebApplication1.Controllers
             _userRepository = userRepository;
         }
 
+        [DisableCors]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
@@ -38,6 +40,7 @@ namespace WebApplication1.Controllers
             }
         }
 
+        [DisableCors]
         [HttpGet]
         [Route("GetUserById")]
         public async Task<ActionResult<User>> GetUserById(int id)
@@ -54,31 +57,6 @@ namespace WebApplication1.Controllers
                 {
 
                     return Ok(users);
-                }
-            }
-            catch (Exception)
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving from the database.");
-            }
-        }
-
-        [HttpGet]
-        [Route("GetUserByEmail")]
-        public async Task<ActionResult<User>> GetUserByEmail(string email)
-        {
-            try
-            {
-                var user = await _userRepository.GetUserByEmail(email);
-
-                if (user == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-
-                    return Ok(user);
                 }
             }
             catch (Exception)
