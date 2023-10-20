@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using WebApplication1.Entites;
 using WebApplication1.Repositories.Contracts;
 
@@ -33,9 +34,9 @@ namespace WebApplication1.Controllers
                     return Ok(users);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                Log.Error(e, e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving from the database.");
             }
         }
@@ -59,11 +60,13 @@ namespace WebApplication1.Controllers
                     return Ok(users);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                Log.Error(e, e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving from the database.");
             }
         }
+
+        
     }
 }

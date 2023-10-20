@@ -14,9 +14,11 @@ namespace WebApplication1.Repositories
             _dbContext = dbContext;
         }
 
-        public Task<User> GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            throw new NotImplementedException();
+            var user = await this._dbContext.Users.Where(u => u.Email == email).FirstAsync();
+
+            return user;
         }
 
         public async Task<User> GetUserById(int id)
