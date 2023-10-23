@@ -7,5 +7,6 @@ namespace WebApplication1.Repositories.Contracts
         Task<IEnumerable<User>> GetUsers();
         Task<User> GetUserById(int id);
         Task<User> GetUserByEmail(string email);
+        Task<string> CreateUser(User user);
     }
 }

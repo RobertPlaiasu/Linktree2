@@ -72,9 +72,18 @@ namespace WebApplication1.Controllers
         [DisableCors]
         [HttpPost]
         [Route("register")]
-        public async Task<ActionResult> Register()
+        public async Task<ActionResult<string>> Register(CreateUserDto user)
         {
-            return Ok();
+            try
+            {
+                
+                return Ok(await _userService.CreateUser(user));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,e.Message);
+            }
+            
         }
 
         
