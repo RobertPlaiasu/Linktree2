@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using WebApplication1.Entites;
+using WebApplication1.Dto;
 using WebApplication1.Repositories.Contracts;
+using WebApplication1.Services.Contracts;
 
 namespace WebApplication1.Controllers
 {
@@ -10,19 +11,20 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
-        public UserController(IUserRepository userRepository)
+        private readonly IUserService _userService;
+
+        public UserController(IUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         [DisableCors]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<GetUserDto>>> GetUsers()
         {
             try
             {
-                var users = await _userRepository.GetUsers();
+                var users = await _userService.GetUsers();
 
                 if (users == null)
                 {
@@ -44,11 +46,11 @@ namespace WebApplication1.Controllers
         [DisableCors]
         [HttpGet]
         [Route("GetUserById")]
-        public async Task<ActionResult<User>> GetUserById(int id)
+        public async Task<ActionResult<GetUserDto>> GetUserById(int id)
         {
             try
             {
-                var users = await _userRepository.GetUserById(id);
+                var users = await _userService.GetUserById(id);
 
                 if (users == null)
                 {
@@ -65,6 +67,14 @@ namespace WebApplication1.Controllers
                 Log.Error(e, e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving from the database.");
             }
+        }
+
+        [DisableCors]
+        [HttpPost]
+        [Route("register")]
+        public async Task<ActionResult> Register()
+        {
+            return Ok();
         }
 
         
