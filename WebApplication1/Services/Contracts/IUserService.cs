@@ -1,4 +1,5 @@
 ﻿using WebApplication1.Dto;
+using WebApplication1.Responses;
 
 namespace WebApplication1.Services.Contracts
 {
@@ -6,6 +7,7 @@ namespace WebApplication1.Services.Contracts
     {
         Task<IEnumerable<GetUserDto>> GetUsers();
         Task<GetUserDto> GetUserById(int id);
-        Task<string> CreateUser(CreateUserDto user);
+        Task<Response> CreateUser(CreateUserDto user);
+        Task<Response> DeleteUser(int id);
     }
 }

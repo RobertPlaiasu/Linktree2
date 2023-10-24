@@ -1,4 +1,5 @@
 ﻿using WebApplication1.Entites;
+using WebApplication1.Responses;
 
 namespace WebApplication1.Repositories.Contracts
 {
@@ -7,6 +8,7 @@ namespace WebApplication1.Repositories.Contracts
         Task<IEnumerable<User>> GetUsers();
         Task<User> GetUserById(int id);
         Task<User> GetUserByEmail(string email);
-        Task<string> CreateUser(User user);
+        Task<Response> CreateUser(User user);
+        Task<Response> DeleteUser(User user);
     }
 }

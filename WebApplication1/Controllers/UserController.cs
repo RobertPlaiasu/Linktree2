@@ -76,16 +76,31 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                
-                return Ok(await _userService.CreateUser(user));
+                var response = await _userService.CreateUser(user);
+                return StatusCode(response.StatusCode, response.Message);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status400BadRequest,e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError,e.Message);
             }
-            
         }
 
-        
+        [DisableCors]
+        [HttpDelete]
+        [Route("ban")]
+        public async Task<ActionResult<string>> ban(int id)
+        {
+            try
+            {
+                var response = await _userService.DeleteUser(id);
+                return StatusCode(response.StatusCode, response.Message);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+
     }
 }

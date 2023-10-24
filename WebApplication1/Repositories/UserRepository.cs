@@ -3,6 +3,7 @@ using Serilog;
 using WebApplication1.Data;
 using WebApplication1.Entites;
 using WebApplication1.Repositories.Contracts;
+using WebApplication1.Responses;
 
 namespace WebApplication1.Repositories
 {
@@ -15,7 +16,7 @@ namespace WebApplication1.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<string> CreateUser(User user)
+        public async Task<Response> CreateUser(User user)
         {
             try
             {
@@ -27,7 +28,22 @@ namespace WebApplication1.Repositories
                 Log.Error(e, e.Message);
                 throw new Exception("Eroare la procesare in baza de date");
             }
-            return "User-ul a fost inregistrat cu succes";
+            return new Response(StatusCodes.Status201Created, "Utilizatorul a fost creat cu scucces cu succes!");
+        }
+
+        public async Task<Response> DeleteUser(User user)
+        {
+            try
+            {
+                _dbContext.Users.Remove(user);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, e.Message);
+                throw new Exception("Eroare la procesare in baza de date");
+            }
+            return new Response(StatusCodes.Status200OK,"Utilizatorul a sters cu succes!");
         }
 
         public async Task<User> GetUserByEmail(string email)
@@ -39,7 +55,7 @@ namespace WebApplication1.Repositories
 
         public async Task<User> GetUserById(int id)
         {
-            var user = await this._dbContext.Users.Where(u => u.Id == id).FirstAsync();
+            var user = await this._dbContext.Users.FindAsync(id);
 
             return user;
         }

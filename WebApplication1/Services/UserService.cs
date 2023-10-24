@@ -3,6 +3,7 @@ using Serilog;
 using WebApplication1.Dto;
 using WebApplication1.Entites;
 using WebApplication1.Repositories.Contracts;
+using WebApplication1.Responses;
 using WebApplication1.Services.Contracts;
 
 namespace WebApplication1.Services
@@ -18,32 +19,44 @@ namespace WebApplication1.Services
             _mapper = mapper;
         }
 
-        public async Task<string> CreateUser(CreateUserDto user)
+        public async Task<Response> CreateUser(CreateUserDto user)
         {
-            string message = String.Empty;
+
             try
             {
-                message = await _userRepository.CreateUser(_mapper.Map<User>(user));
+                var response = await _userRepository.CreateUser(_mapper.Map<User>(user));
+                return response;
             }
             catch(Exception e)
             {
                 Log.Error(e, e.Message);
-                if(message == "Eroare la procesare in baza de date")
-                {
-                    throw new Exception(message);
-                }
-                else
-                {
-                    throw new Exception("Eroare in procesul de procesare a datelor.");
-                }
+                
+                throw new Exception("Eroare interna!");
+                
             }
-            
-            return message;
+        }
+
+        public async Task<Response> DeleteUser(int id)
+        {
+            try
+            {
+                var user = await _userRepository.GetUserById(id);
+                if (user == null)
+                    return new Response(StatusCodes.Status400BadRequest, "Utilizatorul nu exista!");
+                return await _userRepository.DeleteUser(user);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, e.Message);
+
+                throw new Exception("Eroare interna!");
+            }
         }
 
         public async Task<GetUserDto> GetUserById(int id)
         {
             var user = _mapper.Map<GetUserDto>(await _userRepository.GetUserById(id));
+
             return user;
         }
 
