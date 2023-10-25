@@ -94,6 +94,23 @@ namespace WebApplication1.Controllers
             }
             catch (Exception e)
             {
+                Log.Error(e, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<ActionResult<string>> update(UpdateUserDto userDto,int id)
+        {
+            try
+            {
+                var response = await _userService.UpdateUser(userDto,id);
+                return StatusCode(response.StatusCode, response.Message);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }

@@ -10,5 +10,6 @@ namespace WebApplication1.Repositories.Contracts
         Task<User> GetUserByEmail(string email);
         Task<Response> CreateUser(User user);
         Task<Response> DeleteUser(User user);
+        Task<Response> UpdateUser(User user);
     }
 }

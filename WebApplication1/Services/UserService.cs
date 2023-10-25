@@ -65,5 +65,26 @@ namespace WebApplication1.Services
             var users = _mapper.Map<IEnumerable<GetUserDto>>(await _userRepository.GetUsers());
             return users;
         }
+
+        public async Task<Response> UpdateUser(UpdateUserDto userDto, int id)
+        {
+            try
+            {
+                var user = await _userRepository.GetUserById(id);
+
+                if (user == null)
+                    return new Response(StatusCodes.Status400BadRequest, "Utilizatorul nu exista!");
+
+                var newUser = _mapper.Map<User>(userDto);
+                user.Name = newUser.Name;
+                return await _userRepository.UpdateUser(user);
+            }
+            catch(Exception e) 
+            {
+                Log.Error(e, e.Message);
+
+                throw new Exception("Eroare interna!");
+            }
+        }
     }
 }

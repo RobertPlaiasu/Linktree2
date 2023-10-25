@@ -22,13 +22,13 @@ namespace WebApplication1.Repositories
             {
                 await _dbContext.Users.AddAsync(user);
                 await _dbContext.SaveChangesAsync();
+                return new Response(StatusCodes.Status201Created, "Utilizatorul a fost creat cu scucces cu succes!");
             }
             catch (Exception e)
             {
                 Log.Error(e, e.Message);
                 throw new Exception("Eroare la procesare in baza de date");
             }
-            return new Response(StatusCodes.Status201Created, "Utilizatorul a fost creat cu scucces cu succes!");
         }
 
         public async Task<Response> DeleteUser(User user)
@@ -37,13 +37,13 @@ namespace WebApplication1.Repositories
             {
                 _dbContext.Users.Remove(user);
                 await _dbContext.SaveChangesAsync();
+                return new Response(StatusCodes.Status200OK, "Utilizatorul a sters cu succes!");
             }
             catch (Exception e)
             {
                 Log.Error(e, e.Message);
                 throw new Exception("Eroare la procesare in baza de date");
             }
-            return new Response(StatusCodes.Status200OK,"Utilizatorul a sters cu succes!");
         }
 
         public async Task<User> GetUserByEmail(string email)
@@ -65,6 +65,21 @@ namespace WebApplication1.Repositories
             var users = await this._dbContext.Users.ToListAsync();
 
             return users;
+        }
+
+        public async Task<Response> UpdateUser(User user)
+        {
+            try
+            {
+                _dbContext.Update(user);
+                await _dbContext.SaveChangesAsync();
+                return new Response(StatusCodes.Status200OK, "Schimbarile au fost realizate!");
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, e.Message);
+                throw new Exception("Eroare la procesare in baza de date");
+            }
         }
     }
 }

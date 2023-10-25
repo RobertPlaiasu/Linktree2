@@ -9,5 +9,6 @@ namespace WebApplication1.Services.Contracts
         Task<GetUserDto> GetUserById(int id);
         Task<Response> CreateUser(CreateUserDto user);
         Task<Response> DeleteUser(int id);
+        Task<Response> UpdateUser(UpdateUserDto user,int id);
     }
 }
