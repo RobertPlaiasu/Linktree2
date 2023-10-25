@@ -9,6 +9,7 @@ namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowSpecificOrigins")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -18,7 +19,6 @@ namespace WebApplication1.Controllers
             _userService = userService;
         }
 
-        [DisableCors]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetUserDto>>> GetUsers()
         {
@@ -32,7 +32,7 @@ namespace WebApplication1.Controllers
                 }
                 else
                 {
-                    
+
                     return Ok(users);
                 }
             }
@@ -43,7 +43,6 @@ namespace WebApplication1.Controllers
             }
         }
 
-        [DisableCors]
         [HttpGet]
         [Route("GetUserById")]
         public async Task<ActionResult<GetUserDto>> GetUserById(int id)
@@ -69,7 +68,6 @@ namespace WebApplication1.Controllers
             }
         }
 
-        [DisableCors]
         [HttpPost]
         [Route("register")]
         public async Task<ActionResult<string>> Register(CreateUserDto user)
@@ -81,11 +79,10 @@ namespace WebApplication1.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
-        [DisableCors]
         [HttpDelete]
         [Route("ban")]
         public async Task<ActionResult<string>> ban(int id)
@@ -100,7 +97,5 @@ namespace WebApplication1.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-
-
     }
 }
